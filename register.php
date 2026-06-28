@@ -29,7 +29,7 @@ if (
                     $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username_sms&Password=$password_sms&Mobile=$phone_sms&Message=$validation";
 
                     $result_sms = file_get_contents($url);
-                    
+
                     $result = $conn->prepare("INSERT INTO users SET username=?,email=?,phone=?,password=?,`validation`=?");
                     $result->bindValue(1, $username);
                     $result->bindValue(2, $email);

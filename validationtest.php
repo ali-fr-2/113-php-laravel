@@ -31,11 +31,11 @@ if (isset($_POST['phone'])) {
     <title>تست اعتبارسنجی</title>
 </head>
 
-<body>
+<!-- <body>
     <form action="" method="post">
         <input type="text" name="phone">
         <input type="submit" value="send">
     </form>
-</body>
+</body> -->
 
 </html>
