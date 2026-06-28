@@ -2,21 +2,21 @@
 
 if (isset($_POST['phone'])) {
 
-    $phone = $_POST['phone'];
-    $code  = rand(100000, 999999);
+    $phone_sms = $_POST['phone'];
+    $code_sms  = rand(100000, 999999);
 
-    $username = urlencode("aliFR10");
-    $password = urlencode("alifrALIFR10!)");
-    $message  = urlencode("کد فعال سازی شما : " . $code);
+    $username_sms = urlencode("aliFR10");
+    $password_sms = urlencode("alifrALIFR10!)");
+    $message_sms  = urlencode("کد فعال سازی شما : " . $code_sms);
 
-    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username&Password=$password&Mobile=$phone&Message=$message";
+    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username_sms&Password=$password_sms&Mobile=$phone_sms&Message=$message_sms";
 
-    $result = file_get_contents($url);
+    $result_sms = file_get_contents($url);
 
-    echo $result;
+    echo $result_sms;
 
     echo "<pre>";
-    var_dump($result);
+    var_dump($result_sms);
     echo "</pre>";
 }
 
@@ -28,7 +28,7 @@ if (isset($_POST['phone'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>تست اعتبارسنجی</title>
 </head>
 
 <body>

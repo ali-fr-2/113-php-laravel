@@ -1,5 +1,6 @@
 <?php
 include "database/pdo_connection.php";
+include "./validationtest.php";
 $errorEmpty = "";
 $errorPass = "";
 $errorEmail = "";
@@ -23,7 +24,12 @@ if (
                     $phone = $_POST['phone'];
                     $password = $_POST['password'];
                     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $validation=rand(100000,999999);
+                    $validation = rand(100000, 999999);
+
+                    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username_sms&Password=$password_sms&Mobile=$phone_sms&Message=$validation";
+
+                    $result_sms = file_get_contents($url);
+                    
                     $result = $conn->prepare("INSERT INTO users SET username=?,email=?,phone=?,password=?,`validation`=?");
                     $result->bindValue(1, $username);
                     $result->bindValue(2, $email);
@@ -31,7 +37,7 @@ if (
                     $result->bindValue(4, $passwordHash);
                     $result->bindValue(5, $validation);
                     $result->execute();
-                    header("location:validation.php");
+                    header("location:validation.php?success=true");
                 }
             } else {
                 $errorEmail = true;
