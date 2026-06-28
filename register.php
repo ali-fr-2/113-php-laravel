@@ -23,12 +23,15 @@ if (
                     $phone = $_POST['phone'];
                     $password = $_POST['password'];
                     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $result = $conn->prepare("INSERT INTO users SET username=?,email=?,phone=?,password=?");
+                    $validation=rand(100000,999999);
+                    $result = $conn->prepare("INSERT INTO users SET username=?,email=?,phone=?,password=?,`validation`=?");
                     $result->bindValue(1, $username);
                     $result->bindValue(2, $email);
                     $result->bindValue(3, $phone);
                     $result->bindValue(4, $passwordHash);
+                    $result->bindValue(5, $validation);
                     $result->execute();
+                    header("location:validation.php");
                 }
             } else {
                 $errorEmail = true;

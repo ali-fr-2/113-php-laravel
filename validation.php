@@ -1,41 +1,72 @@
 <?php
-
-if (isset($_POST['phone'])) {
-
-    $phone = $_POST['phone'];
-    $code  = rand(100000, 999999);
-
-    $username = urlencode("aliFR10");
-    $password = urlencode("alifrALIFR10!)");
-    $message  = urlencode("کد فعال سازی شما : " . $code);
-
-    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username&Password=$password&Mobile=$phone&Message=$message";
-
-    $result = file_get_contents($url);
-
-    echo $result;
-
-    echo "<pre>";
-    var_dump($result);
-    echo "</pre>";
-}
-
+include "database/pdo_connection.php";
+$errorvalidation="";
+    
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="styles/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/css/style.css">
+    <link rel="stylesheet" href="styles/css/auth.css">
+    <!-- Css Reset -->
+    <link rel="stylesheet" href="styles/css/reset.css">
+    <!-- Vazir Font -->
+    <link rel="stylesheet" href="fonts/vazir.css">
+    <!-- Fontawsome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <!-- CDN toastr -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <title>اعتبار سنجی </title>
 </head>
-
 <body>
-    <form action="" method="post">
-        <input type="text" name="phone">
-        <input type="submit" value="send">
-    </form>
-</body>
+    <section class="d-flex justify-content-center align-items-center min-h-screen bg">
+        <div id="overlay"></div>
+        <div class="form-container">
+            <form action="#" method="GET" >
 
+          
+        
+                <h1 class="title"> کد تایید را وارد بکنید  </h1>
+                <div class="mt-3 position-relative">
+                    <input name="validation" type="number" class="field" placeholder="کد تایید را وارد بکنید ...">
+                    <i class="fa fa-key field_icon"></i>
+                </div>
+                <div class="mt-3">
+                    <button name="sub" type="submit" class="btn-submit bg-primary">
+                        <i class="fa fa-key ms-1"></i>
+                        <span>ارسال کد </span>
+                    </button>
+                </div>
+        
+                <p class="text">
+                    قبلا ثبت نام کرده اید ؟ <a href="/login.html" class="text-primary">ورود</a>
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <script src="js/showPassword.js"></script>
+    <script src="js/darkMode.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js\jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <?php if($_GET['success']==true){ ?>
+    <script>
+    
+    toastr.success('کد فعال سازی برای شما ارسال شد    ');
+    </script>
+<?php } ?>
+<?php if($errorvalidation){ ?>
+    <script>
+    
+    toastr.error('کد فعال سازی اشتباه هست       ');
+    </script>
+<?php } ?>
+</body>
 </html>
