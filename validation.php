@@ -14,7 +14,7 @@ if (isset($_GET['validation'])) {
         $update->bindValue(2, $validation);
         $update->execute();
 
-        header("Location:index.html");
+        header("Location:index.php");
         exit;
     } else {
 

@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
 
                         $_SESSION['id'] = $user['id'];
                         $_SESSION['logged_in']=true;
-                        header("Location:index.html");
+                        header("Location:index.php");
                         exit;
                     } else {
                         $errorIncorect = true;

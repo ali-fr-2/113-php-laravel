@@ -1,6 +1,5 @@
 <?php
 include "database/pdo_connection.php";
-include "./validationtest.php";
 $errorEmpty = "";
 $errorPass = "";
 $errorEmail = "";
@@ -26,7 +25,11 @@ if (
                     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                     $validation = rand(100000, 999999);
 
-                    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username_sms&Password=$password_sms&Mobile=$phone_sms&Message=$validation";
+                    $username_sms = urlencode("aliFR10");
+                    $password_sms = urlencode("alifrALIFR10!)");
+                    $message_sms  = urlencode("کد فعال سازی شما : ");
+
+                    $url = "http://smspanel.Trez.ir/SendMessageWithCode.ashx?Username=$username_sms&Password=$password_sms&Mobile=$phone&Message=$validation";
 
                     $result_sms = file_get_contents($url);
 
