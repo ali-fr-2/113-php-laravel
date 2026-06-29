@@ -14,6 +14,7 @@ if (isset($_POST['submit'])) {
     $result->bindValue(4, $_GET['id']);
     $result->execute();
     // header("location:showmenu.php");  // this aint work
+    echo '<script>window.location="showmenu.php";</script>';
 }
 $stmt = $conn->prepare("SELECT * FROM menus");
 $stmt->execute();
