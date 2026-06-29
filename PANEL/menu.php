@@ -12,10 +12,10 @@ if (isset($_POST['submit'])) {
   $result->bindValue(2, $parent);
   $result->bindValue(3, $sort);
   $result->execute();
-  $stmt = $conn->prepare("SELECT * FROM menu");
+}
+  $stmt = $conn->prepare("SELECT * FROM menus");
   $stmt->execute();
   $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
               <select name="parent" class="form-select mt-2" id="category">
                 <option value="0"> بدون والد</option>
                 <?php foreach ($menus as $menu) { ?>
-                  <option value="<?= $menu['id']?>"> <?= $menu['parent'] ?> </option>
+                  <option value="<?= $menu['id']?>"> <?= $menu['title'] ?> </option>
                 <?php } ?>
               </select>
             </div>

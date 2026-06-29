@@ -54,6 +54,22 @@
 
                     <li x-data="dropdown" class="sidebar-item">
                         <div @click="toggle" class="sidebar-link">
+                            <i class="me-2 bi bi-shop"></i>
+                            <span>منو</span>
+                            <i class="ms-auto bi bi-chevron-down"></i>
+                        </div>
+                        <ul x-show="open" x-transition class="submenu">
+                            <li class="submenu-item">
+                                <a href="./menu.php">ایجاد منو   </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="./showmenu.php">نمایش منو </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li x-data="dropdown" class="sidebar-item">
+                        <div @click="toggle" class="sidebar-link">
                             <i class="me-2 bi bi-box-seam"></i>
                             <span>محصولات</span>
                             <i class="ms-auto bi bi-chevron-down"></i>
@@ -130,7 +146,7 @@
                             <i class="ms-auto bi "></i>
                         </div>
                         <ul x-show="open" x-transition class="submenu">
-                           
+
                         </ul>
                     </li>
                 </ul>
@@ -138,7 +154,7 @@
         </section>
 
         <section class="main" :class="open || 'active'">
-         
+
         </section>
     </section>
 
@@ -148,7 +164,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-        </script>
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
 
