@@ -53,7 +53,7 @@ $count=1;
                   ?>
                 </td>
                 <td><?= $menu['sort'];?></td>
-                <td><a href="./edit.php" class="btn btn-warning mx-2">ویرایش</a><a href="./delete.php" class="btn btn-danger">حذف</a></td>
+                <td><a href="./edit.php?id=<?=$menu['id']?>" class="btn btn-warning mx-2">ویرایش</a><a href="./delete.php?id=<?=$menu['id']?>" class="btn btn-danger">حذف</a></td>
               </tr>
             <?php } ?>
           </tbody>
