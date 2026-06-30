@@ -99,14 +99,14 @@ $menus = $result->fetchAll(PDO::FETCH_ASSOC);
 
 
                     <li class="nav-item me-0">
-                        <a class="nav-link mt-3 mt-lg-0" href="/login.html">
+                        <a class="nav-link mt-3 mt-lg-0" href="login.php">
                             <i class="fa fa-sign-in ms-1"></i>
                             <span>ورود</span>
                         </a>
                     </li>
 
                     <li class="nav-item me-0">
-                        <a class="nav-link mt-3 mt-lg-0" href="/register.html">
+                        <a class="nav-link mt-3 mt-lg-0" href="/register.php">
                             <i class="fa fa-user-plus ms-1"></i>
                             <span>عضویت</span>
                         </a>

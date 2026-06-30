@@ -1,5 +1,5 @@
 <?php
-
+include "./auth.php";
 include "../database/pdo_connection.php";
 include "header.php";
 

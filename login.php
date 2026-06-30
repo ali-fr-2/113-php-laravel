@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
         $password = trim($_POST['password']);
         if (preg_match('/^09\d{9}$/', $phone)) {
             $result = $conn->prepare(
-                "SELECT id,password,status FROM users WHERE phone=?"
+                "SELECT id,username,role,password,status FROM users WHERE phone=?"
             );
             $result->bindValue(1, $phone);
             $result->execute();
@@ -24,9 +24,13 @@ if (isset($_POST['submit'])) {
 
                         session_regenerate_id(true);
 
-                        $_SESSION['id'] = $user['id'];
-                        $_SESSION['logged_in']=true;
-                        header("Location:index.php");
+                        $_SESSION['logged_in'] = true;
+                        $_SESSION['id']        = $user['id'];
+                        $_SESSION['role']      = $user['role'];
+                        $_SESSION['username']  = $user['username'];
+                        $_SESSION['last_login'] = date('Y-m-d H:i:s');
+
+                        header("Location: index.php");
                         exit;
                     } else {
                         $errorIncorect = true;
@@ -109,28 +113,28 @@ if (isset($_POST['submit'])) {
         </script>
 
     <?php } ?>
-        <?php if ($errorEmpty) { ?>
+    <?php if ($errorEmpty) { ?>
 
         <script>
             toastr.error("FILL THE FORM!");
         </script>
 
     <?php } ?>
-        <?php if ($errorNotValidPhone) { ?>
+    <?php if ($errorNotValidPhone) { ?>
 
         <script>
             toastr.error("YOUR PHONE NUMBER IS NOT VALID !");
         </script>
 
     <?php } ?>
-        <?php if ($errorIncorect) { ?>
+    <?php if ($errorIncorect) { ?>
 
         <script>
             toastr.error("YOUR PASSWORD OR PHONE IS INCORRECT !");
         </script>
 
     <?php } ?>
-        <?php if ($errorStatus) { ?>
+    <?php if ($errorStatus) { ?>
 
         <script>
             toastr.error("YOUR ACCOUNT HAS NOT BEEN ACTIVATED !");

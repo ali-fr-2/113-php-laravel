@@ -1,5 +1,5 @@
 <?php 
-
+include "./auth.php";
 include "../database/pdo_connection.php";
 
 $result=$conn->prepare("DELETE FROM menus WHERE id=? ");
