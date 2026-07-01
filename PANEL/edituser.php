@@ -1,7 +1,6 @@
 <?php
 include "./auth.php";
 include "../database/pdo_connection.php";
-include "header.php";
 
 if (!isset($_GET['id'])) {
     die("Invalid Request");
@@ -26,6 +25,8 @@ if(isset($_POST['submit'])){
 
     $username=$_POST['username'];
     $phone=$_POST['phone'];
+
+    // $role=$item['role'];
 
     if($_SESSION['role']==3){
         $role = (int)$_POST['role'];
@@ -52,6 +53,8 @@ if(isset($_POST['submit'])){
     header("Location: showusers.php");
     exit;
 }
+include "header.php";
+
 // echo "<pre>";
 // var_dump($_SESSION);
 // echo "</pre>";
@@ -74,7 +77,7 @@ if(isset($_POST['submit'])){
                     <i class="bi bi-plus-circle"></i>
                     <span>ویرایش کاربر</span>
                 </h1>
-                <form action="#" class="mt-4" method="POST">
+                <form action="" class="mt-4" method="POST">
                     <div class="row">
                         <div class="col-md-6">
                             <label for="name" class="text-gray-600 fw-bold"> نام کاربری </label>

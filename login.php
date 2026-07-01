@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
                         $_SESSION['username']  = $user['username'];
                         $_SESSION['last_login'] = date('Y-m-d H:i:s');
 
-                        header("Location: index.php");
+                        header("Location: PANEL\index.php");
                         exit;
                     } else {
                         $errorIncorect = true;

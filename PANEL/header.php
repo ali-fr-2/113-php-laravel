@@ -60,7 +60,7 @@
                         </div>
                         <ul x-show="open" x-transition class="submenu">
                             <li class="submenu-item">
-                                <a href="./menu.php">ایجاد منو   </a>
+                                <a href="./menu.php">ایجاد منو </a>
                             </li>
                             <li class="submenu-item">
                                 <a href="./showmenu.php">نمایش منو </a>
@@ -128,7 +128,7 @@
                         </div>
                         <ul x-show="open" x-transition class="submenu">
                             <li class="submenu-item">
-                                <a href="#">لیست کاربران</a>
+                                <a href="./showusers.php">لیست کاربران</a>
                             </li>
                             <li class="submenu-item">
                                 <a href="#">ایجاد کاربران</a>
