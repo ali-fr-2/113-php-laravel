@@ -59,9 +59,11 @@ if (isset($_POST['submit'])) {
 
     if (move_uploaded_file($tmp, $folder . $newName)) {
 
-        $result = $conn->prepare("INSERT INTO files (file_name) VALUES (?)");
+        $result = $conn->prepare("INSERT INTO files SET file_name=?,
+    file_type=?");
 
         $result->bindValue(1, $newName);
+        $result->bindValue(2, $type);
 
         $result->execute();
 
@@ -74,6 +76,12 @@ if (isset($_POST['submit'])) {
     }
 
 }
+
+$videos=$conn->prepare("SELECT *
+FROM files
+WHERE file_type='movie'");
+$videos->execute();
+$movies=$videos->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- <form action="upload.php" method="POST" enctype="multipart/form-data">
@@ -120,3 +128,13 @@ if (isset($_POST['submit'])) {
     </button>
 
 </form>
+
+
+
+<?php foreach($movies as $movie){?>
+<h3>Showing Video</h3>
+
+<video controls>
+    <source src="uploads/movies/<?= $movie['file_name']?>" type="video/mp4">
+</video>
+<?php }?>
