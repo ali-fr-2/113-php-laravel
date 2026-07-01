@@ -1,140 +1,91 @@
 <?php
+include "pdo.php";
+if (isset($_POST['submit']) && !empty($_FILES["fileToUpload"]["tmp_name"])) {
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $message = array();
+// Check if image file is a actual image or fake image
 
-
-// include "../database/pdo_connection.php";
-
-// if (isset($_POST['submit_image'])) {
-
-//     $tmp = $_FILES['image']['tmp_name'];
-//     $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-
-//     $newName = uniqid() . "." . $extension;
-
-//     if (move_uploaded_file($tmp, "uploads/images/" . $newName)) {
-//         echo "آپلود با موفقیت انجام شد.";
-
-//         $result = $conn->prepare("INSERT INTO files SET file_name=?");
-//         $result->bindValue(1, $newName);
-//         $result->execute();
-//     } else {
-//         echo "آپلود ناموفق بود.";
-//     }
-// }
-
-// if (isset($_POST['submit_movie'])) {
-
-//     $tmp = $_FILES['movie']['tmp_name'];
-//     $extension = pathinfo($_FILES['movie']['name'], PATHINFO_EXTENSION);
-
-//     $newName = uniqid() . "." . $extension;
-
-//     if (move_uploaded_file($tmp, "uploads/movies/" . $newName)) {
-//         $result = $conn->prepare("INSERT INTO files SET file_name=?");
-//         $result->bindValue(1, $newName);
-//         $result->execute();
-//     } else {
-//         echo "آپلود ناموفق بود.";
-//     }
-// }
-
-
-
-include "../database/pdo_connection.php";
-
-if (isset($_POST['submit'])) {
-
-    $type = $_POST['type']; // image یا movie
-
-    $file = $_FILES['file'];
-
-    $tmp = $file['tmp_name'];
-
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-
-    $newName = uniqid() . "." . $extension;
-
-    $folder = ($type == "image")
-        ? "uploads/images/"
-        : "uploads/movies/";
-
-    if (move_uploaded_file($tmp, $folder . $newName)) {
-
-        $result = $conn->prepare("INSERT INTO files SET file_name=?,
-    file_type=?");
-
-        $result->bindValue(1, $newName);
-        $result->bindValue(2, $type);
-
-        $result->execute();
-
-        echo "آپلود با موفقیت انجام شد.";
-
-    } else {
-
-        echo "آپلود ناموفق بود.";
-
+ 
+// Check if file already exists
+    if (file_exists($target_file)) {
+        $message[] = "با عرض پوزش ، پرونده از قبل وجود دارد.";
+        $uploadOk = 0;
     }
-
+ 
+// Check file size
+    if ($_FILES["fileToUpload"]["size"] > 5000000000) {
+        $message[] = "با عرض پوزش ، پرونده شما بسیار بزرگ است.";
+        $uploadOk = 0;
+    }
+ 
+// Allow certain file formats
+    if ($imageFileType != "mp4" ) {
+        $message[] = "متاسفیم فرمت فایل شما باید JPG, JPEG, PNG & GIF باشد.";
+        $uploadOk = 0;
+    }
+ 
+// Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        $message[] = "متاسفانه فایل شما به درستی آپلود نشد!";
+ 
+// if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            $message[] = "فایل شما با نام " . basename($_FILES["fileToUpload"]["name"]) . "به خوبی آپلود شد.";
+        } else {
+            $message[] = "متأسفیم ، هنگام بارگذاری پرونده شما خطایی رخ داد.";
+        }
+    }
 }
 
-$videos=$conn->prepare("SELECT *
-FROM files
-WHERE file_type='movie'");
-$videos->execute();
-$movies=$videos->fetchAll(PDO::FETCH_ASSOC);
+
+if(isset($_POST['submit'])){
+  $nameVideo=$_FILES["fileToUpload"]["name"];
+  $result=$conn->prepare("INSERT INTO video SET video=?");
+  $result->bindValue(1,$nameVideo);
+  $result->execute();
+}
+
+
+
 ?>
+<!DOCTYPE html>
+<html>
 
-<!-- <form action="upload.php" method="POST" enctype="multipart/form-data">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+</head>
 
-    <input type="file" name="image">
+<body>
+    <br>
+    <div class="containers">
+        <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
 
-    <button type="submit" name="submit_image">
-        Upload images
-    </button>
+            <p class="form-element">
+                <label>تصویر را انتخاب کنید:</label>
+                <br>
+                <br>
+                <input type="file" name="fileToUpload" id="fileToUpload">
+            </p>
 
-</form>
-
-<form action="upload.php" method="POST" enctype="multipart/form-data">
-
-    <input type="file" name="movie">
-
-    <button type="submit" name="submit_movie">
-        Upload movies
-    </button>
-
-</form> -->
-
-
-<form action="upload.php" method="POST" enctype="multipart/form-data">
-
-    <input type="hidden" name="type" value="image">
-
-    <input type="file" name="file">
-
-    <button type="submit" name="submit">
-        Upload Image
-    </button>
-
-</form>
-
-<form action="upload.php" method="POST" enctype="multipart/form-data">
-
-    <input type="hidden" name="type" value="movie">
-
-    <input type="file" name="file">
-
-    <button type="submit" name="submit">
-        Upload Movie
-    </button>
-
-</form>
-
-
-
-<?php foreach($movies as $movie){?>
-<h3>Showing Video</h3>
-
-<video controls>
-    <source src="uploads/movies/<?= $movie['file_name']?>" type="video/mp4">
-</video>
-<?php }?>
+            <p class="form-element">
+                <input type="submit" value="آپلود تصویر" name="submit">
+            </p>
+        </form>
+    </div>
+  <br>
+    <?php if (isset($message)) { ?>
+        <div class="container alert alert-primary">
+            <?php echo implode('<br>', $message); ?>
+        </div>
+        <br>
+    <?php 
+} ?>
+</body>
+</html>
