@@ -70,6 +70,22 @@
 
                     <li x-data="dropdown" class="sidebar-item">
                         <div @click="toggle" class="sidebar-link">
+                            <i class="me-2 bi bi-shop"></i>
+                            <span>دوره ها</span>
+                            <i class="ms-auto bi bi-chevron-down"></i>
+                        </div>
+                        <ul x-show="open" x-transition class="submenu">
+                            <li class="submenu-item">
+                                <a href="./course.php">افزودن دوره  </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="./showcourse.php">نمایش دوره ها </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li x-data="dropdown" class="sidebar-item">
+                        <div @click="toggle" class="sidebar-link">
                             <i class="me-2 bi bi-box-seam"></i>
                             <span>محصولات</span>
                             <i class="ms-auto bi bi-chevron-down"></i>
