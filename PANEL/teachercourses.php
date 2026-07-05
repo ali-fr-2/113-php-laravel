@@ -55,7 +55,7 @@ $count = 1;
                                 <td><?= $course['price']; ?></td>
                                 <td><?= jdate('Y/m/d/h:i:s', $course['create_date']); ?></td>
                                 <td><?= jdate('Y/m/d/h:i:s', $course['update_date']); ?></td>
-                                <td><a href="./deletemenu.php?id=<?= $course['id'] ?>" class="btn btn-success">  +افزودن قسمت جدید</a></td>
+                                <td><a href="./episodes.php?id=<?= $course['id'] ?>" class="btn btn-success">  +افزودن قسمت جدید</a></td>
                             </tr>
                         <?php } ?>
                     </tbody>
