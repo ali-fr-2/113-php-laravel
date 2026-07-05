@@ -123,9 +123,9 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#">
-                            <i class="me-2 bi bi-percent"></i>
-                            <span>تخفیف ها</span>
+                        <a class="sidebar-link" href="./teachercourses.php">
+                            <i class="me-2 bi bi-book-half"></i>
+                            <span> دوره های مدرس</span>
                         </a>
                     </li>
 

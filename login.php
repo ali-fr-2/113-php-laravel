@@ -27,6 +27,7 @@ if (isset($_POST['submit'])) {
                         $_SESSION['logged_in'] = true;
                         $_SESSION['id']        = $user['id'];
                         $_SESSION['role']      = $user['role'];
+                        $_SESSION['phone']      = $user['phone'];
                         $_SESSION['username']  = $user['username'];
                         $_SESSION['last_login'] = date('Y-m-d H:i:s');
 
