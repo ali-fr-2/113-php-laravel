@@ -1,5 +1,34 @@
+<?php
+include "database\jdf.php";
+include "database\pdo_connection.php";
+
+// $getID = $_GET['id'];   //course ID
+
+if (!isset($_GET['id'])) {
+    die("Invalid Course");
+}
+
+$getID = (int) $_GET['id'];
+
+$result = $conn->prepare("SELECT * FROM episodes WHERE course=?");
+$result->bindValue(1, $getID);
+$result->execute();
+
+$episodes = $result->fetchAll(PDO::FETCH_ASSOC);
+
+$result = $conn->prepare("SELECT * FROM courses WHERE id=?");
+$result->bindValue(1, $getID);
+$result->execute();
+
+$courses = $result->fetch(PDO::FETCH_ASSOC);
+
+$count=1;
+
+?>
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,6 +50,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>پست</title>
 </head>
+
 <body>
     <div class="modal fade" id="modalSearchBox">
         <div class="modal-dialog modal-dialog-centered">
@@ -39,7 +69,7 @@
             <div class="d-flex align-items-center">
                 <button type="button" class="search-icon" data-bs-toggle="modal" data-bs-target="#modalSearchBox">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                     </svg>
                 </button>
                 <button id="switchTheme"></button>
@@ -49,7 +79,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
                 <i class="fas fa-bars fs-3"></i>
             </button>
-            
+
 
             <div class="collapse navbar-collapse right-nav justify-content-start" id="navbar">
                 <ul class="navbar-nav nav-left">
@@ -65,14 +95,14 @@
                             <span>پست ها</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item me-0">
                         <a class="nav-link mt-3 mt-lg-0" href="/login.html">
                             <i class="fa fa-sign-in ms-1"></i>
                             <span>ورود</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item me-0">
                         <a class="nav-link mt-3 mt-lg-0" href="/register.html">
                             <i class="fa fa-user-plus ms-1"></i>
@@ -82,29 +112,147 @@
                 </ul>
             </div>
 
-            
+
         </div>
     </nav>
+    <div class="content bg-white col-8">
 
+    </div>
 
     <main style="margin-top: 10rem; margin-bottom: 5rem;">
-        <div class="post-container w-100 mx-auto">
-            <div class="content bg-white">
-                <h4 class="title">php یا nodejs ?</h4>
-                <span class="date">نوشته شده توسط m</span>
-                <span class="author">12 تیر 1401</span>
 
-                <div class="img w-100">
-                    <img src="images/post_img.png" alt="Image" class="w-100 rounded">
+        <div class="me-5">
+            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+            <div class="row">
+                <div class="content col-md-3 ">
+
+                    <div class="teacherprofile mt-3 py-1 px-4 shadow p-3 mb-5 bg-body  rounded">
+
+                        <div class="d-flex align-items-center justify-content-between  pt-0">
+                            <img src="https://codeyad.com/assets/images/online-learning.png" style="width:70px;" alt="">
+                            <div>
+                                مدرس :
+                                <a href="">حسین عنایتی</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="coursedescription pb-3">
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">قیمت</p>
+                                <p class="text-success fw-bold"> تومان 500</p>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">تعداد قسمت ها</p>
+                                <p class="fw-bold">132</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">وضعیت دوره</p>
+                                <p class="text-success fw-bold">درحال برگزاری</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">سطح دوره</p>
+                                <p class=" fw-bold">از مقدماتی تا پیشرفته</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">آخرین بروزرسانی</p>
+                                <p class=" fw-bold"><?= jdate('Y/m/d'); ?></p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted">ثبت نام در دوره</p>
+                                <a class="btn btn-success" href="https://codeyad.com/">ثبت نام </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="shadow p-3 mb-5 bg-body rounded">
+                        برچسب ها :
+
+                        <hr>
+                        <div class="">
+                            <div class=""><a class="" href="">یادگیری برنامه نویسی</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="content col-6 col-md-8 bg-white me-3">
+
+
+
+                    <h4 class="title mb-4"> <?= $courses['title']; ?> </h4>
+                    <div class="img w-100 bg-black">
+                        <video controls poster="images/my-poster.jpg" width="100%">
+                            <source src="./PANEL/uploads/movies/<?= $courses['introduction'] ?>" type="video/mp4">
+                        </video>
+
+                    </div>
+                    <div class="mt-5">
+                        <p>
+
+                            <?= $courses['caption']; ?>
+
+                        </p>
+                    </div>
+
+
+
                 </div>
 
-                <p class="desc">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                <p class="desc">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                <p class="desc">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                <p class="desc">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                <p class="desc">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
             </div>
-        </div>
+            <div class="row mt-2">
+                <div class="content col-md-3  ">
+                </div>
+
+
+                <div class="content col-6 col-md-8 bg-white me-3">
+
+
+                    <h4 class="title mb-4"> بخش های دوره</h4>
+                    <div class="img w-100 bg-black">
+                    </div>
+
+
+                    <?php foreach($episodes as $episode){?>
+                    <div class="p-3 bg-info bg-opacity-10 border border-info rounded-end mt-2">
+                        <div class="course-unit-item p-2  align-items-center">
+                            <div>
+                                <span class="counter"><?= $count++;?></span>
+                                <h3 class="episodeTitle d-inline"><?= $episode['title']?> </h3>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mt-1">
+                            <a href="./PANEL/uploads/images/<?=$episode['file'];?>">
+                                <div class="d-flex align-items-center justify-content-center cursor-pointer receive mb-1">
+                                    <i class="fas fa-download pl-1 ms-1"></i>
+                                    <p>دریافت فایل</p>
+                                </div>
+                            </a>
+                            <a href="./PANEL/uploads/movies/<?= $episode['video'];?>">
+                                <div class="d-flex align-items-center justify-content-center cursor-pointer play mb-1">
+                                    <i class="fas fa-play pl-1 ms-1"></i>
+                                    <p> دریافت ویدیو </p>
+                                </div>
+                            </a>
+                            <div class="d-flex align-items-center justify-content-center cursor-pointer askAnswer mb-1">
+                                <p><?= $episode['time']?> </p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php }?>
+
+
+                </div>
+
+
+            </div>
+
+
+
     </main>
 
 
@@ -113,16 +261,17 @@
             <p class="fw-bold text-white mb-3 mb-md-0 fs-6">تمامی حقوق برای کدیاد محفوظ می باشد &copy;</p>
             <button type="button" id="scrollUpBtn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
                 </svg>
             </button>
         </div>
     </footer>
 
-    
+
 
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/scrollToUp.js"></script>
     <script src="js/darkMode.js"></script>
 </body>
+
 </html>

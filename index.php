@@ -1,11 +1,11 @@
 <?php
 
 include "./database/pdo_connection.php";
-$result = $conn->prepare("SELECT * FROM menus ORDER BY sort");
+$result = $conn->prepare("SELECT * FROM menus ");
 $result->execute();
 $menus = $result->fetchAll(PDO::FETCH_ASSOC);
 
-$result = $conn->prepare("SELECT * FROM courses");
+$result = $conn->prepare("SELECT * FROM courses ORDER BY `id` DESC LIMIT 3");
 $result->execute();
 $courses = $result->fetchAll(PDO::FETCH_ASSOC);
 
@@ -156,12 +156,12 @@ function limit_words($string, $word_limit)
                         <div class="col-md-6 col-lg-4 mt-3">
                             <div class="post">
                                 <div class="post__img">
-                                    <a href="#">
+                                    <a href="./single.php?id=<?=$course['id'] ?>">
                                         <img src="./PANEL/uploads/images/<?= $course['image'] ?>" class="w-100 rounded" alt="Image post" style="height: 200px;">
                                     </a>
                                 </div>
                                 <h4 class="">
-                                    <a href="#" class="post__title d-block"> <?= $course['title'] ?> </a>
+                                    <a href="./single.php?id=<?=$course['id'] ?>" class="post__title d-block"> <?= $course['title'] ?> </a>
                                 </h4>
                                 <p class="post__desc">
                                     <?php $content = $course['caption'];
