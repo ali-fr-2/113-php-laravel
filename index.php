@@ -1,9 +1,19 @@
 <?php
 
 include "./database/pdo_connection.php";
-$result = $conn->prepare("SELECT * FROM menus");
+$result = $conn->prepare("SELECT * FROM menus ORDER BY sort");
 $result->execute();
 $menus = $result->fetchAll(PDO::FETCH_ASSOC);
+
+$result = $conn->prepare("SELECT * FROM courses");
+$result->execute();
+$courses = $result->fetchAll(PDO::FETCH_ASSOC);
+
+function limit_words($string, $word_limit)
+{
+    $words = explode(" ", $string);
+    return implode(" ", array_splice($words, 0, $word_limit));
+}
 
 ?>
 
@@ -140,117 +150,46 @@ $menus = $result->fetchAll(PDO::FETCH_ASSOC);
             <div id="posts" class="mb-5 col-lg-9">
                 <h4 class="posts__title">پست ها</h4>
                 <div class="row">
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
+
+                    <?php foreach ($courses as $course) { ?>
+
+                        <div class="col-md-6 col-lg-4 mt-3">
+                            <div class="post">
+                                <div class="post__img">
+                                    <a href="#">
+                                        <img src="./PANEL/uploads/images/<?= $course['image'] ?>" class="w-100 rounded" alt="Image post" style="height: 200px;">
+                                    </a>
+                                </div>
+                                <h4 class="">
+                                    <a href="#" class="post__title d-block"> <?= $course['title'] ?> </a>
+                                </h4>
+                                <p class="post__desc">
+                                    <?php $content = $course['caption'];
+                                    echo limit_words($content, 20);
+                                    ?>
+                                </p>
+
+                                <div
+                                    class="d-flex flex-row justify-content-between m-0 py-0 px-4 text-white">
+                                    <div class="price d-flex flex-column mt-1"><?= $course['price']?></div>
+                                    <div class="time-wrapper d-flex flex-row align-items-center">
+                                        <span class="fs-6"> <?= $course['create_date']?> </span>
+                                        <div>
+                                            <i class="fa fa-clock p-1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="time-wrapper d-flex flex-row align-items-center">
+                                        <span> ۱ </span>
+                                        <div>
+                                            <i class="fa fa-film p-1"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
-
-                            <a href="#" class="post__link">مشاهده پست</a>
                         </div>
-                    </div>
 
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
-                            </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
+                    <?php } ?>
 
-                            <a href="#" class="post__link">مشاهده پست</a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
-                            </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
-
-                            <a href="#" class="post__link">مشاهده پست</a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
-                            </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
-
-                            <a href="#" class="post__link">مشاهده پست</a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
-                            </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
-
-                            <a href="#" class="post__link">مشاهده پست</a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-lg-4 mt-3">
-                        <div class="post">
-                            <div class="post__img">
-                                <a href="#">
-                                    <img src="images/post_img.png" class="w-100 rounded" alt="Image post">
-                                </a>
-                            </div>
-                            <h4 class="">
-                                <a href="#" class="post__title d-block">php یا nodejs ?</a>
-                            </h4>
-                            <p class="post__desc">
-                                لوی: Lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به عنوان عنصری از ترکیبد.
-                            </p>
-
-                            <a href="#" class="post__link">مشاهده پست</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <aside class="categories col-lg-3 mt-5 mt-md-0">
