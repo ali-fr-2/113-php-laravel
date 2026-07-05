@@ -1,6 +1,11 @@
 <?php
-include "database\jdf.php";
-include "database\pdo_connection.php";
+include "./database/jdf.php";
+include "./database/pdo_connection.php";
+
+session_start();
+
+$errorReapeted = false;
+$success = false;
 
 // $getID = $_GET['id'];   //course ID
 
@@ -22,7 +27,25 @@ $result->execute();
 
 $courses = $result->fetch(PDO::FETCH_ASSOC);
 
-$count=1;
+$count = 1;
+
+if (isset($_POST['add'])) {
+
+    $result = $conn->prepare("SELECT * FROM `shopcard` WHERE id_user=? AND id_course=? ");
+    $result->bindValue(1, $_SESSION['id']);
+    $result->bindValue(2, $getID);
+    $result->execute();
+    if ($result->rowCount() >= 1) {
+        $errorReapeted = true;
+    } else {
+        $result = $conn->prepare("INSERT INTO shopcard SET id_user=?, id_course=?");
+        $result->bindValue(1, $_SESSION['id']);
+        $result->bindValue(2, $getID);
+        $result->execute();
+
+        $success = true;
+    }
+}
 
 ?>
 
@@ -48,6 +71,7 @@ $count=1;
     <link rel="stylesheet" href="fonts/vazir.css">
     <!-- Fontawsome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>پست</title>
 </head>
 
@@ -159,8 +183,10 @@ $count=1;
                                 <p class=" fw-bold"><?= jdate('Y/m/d'); ?></p>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <p class="text-muted">ثبت نام در دوره</p>
-                                <a class="btn btn-success" href="https://codeyad.com/">ثبت نام </a>
+
+                                <form method="post">
+                                    <input class="btn btn-success add-butt login-in-dore login-in-dore-hover me-5 " type="submit" name="add" value="ثبت نام در این دوره">
+                                </form>
                             </div>
 
                         </div>
@@ -217,33 +243,33 @@ $count=1;
                     </div>
 
 
-                    <?php foreach($episodes as $episode){?>
-                    <div class="p-3 bg-info bg-opacity-10 border border-info rounded-end mt-2">
-                        <div class="course-unit-item p-2  align-items-center">
-                            <div>
-                                <span class="counter"><?= $count++;?></span>
-                                <h3 class="episodeTitle d-inline"><?= $episode['title']?> </h3>
+                    <?php foreach ($episodes as $episode) { ?>
+                        <div class="p-3 bg-info bg-opacity-10 border border-info rounded-end mt-2">
+                            <div class="course-unit-item p-2  align-items-center">
+                                <div>
+                                    <span class="counter"><?= $count++; ?></span>
+                                    <h3 class="episodeTitle d-inline"><?= $episode['title'] ?> </h3>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                <a href="./PANEL/uploads/images/<?= $episode['file']; ?>">
+                                    <div class="d-flex align-items-center justify-content-center cursor-pointer receive mb-1">
+                                        <i class="fas fa-download pl-1 ms-1"></i>
+                                        <p>دریافت فایل</p>
+                                    </div>
+                                </a>
+                                <a href="./PANEL/uploads/movies/<?= $episode['video']; ?>">
+                                    <div class="d-flex align-items-center justify-content-center cursor-pointer play mb-1">
+                                        <i class="fas fa-play pl-1 ms-1"></i>
+                                        <p> دریافت ویدیو </p>
+                                    </div>
+                                </a>
+                                <div class="d-flex align-items-center justify-content-center cursor-pointer askAnswer mb-1">
+                                    <p><?= $episode['time'] ?> </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mt-1">
-                            <a href="./PANEL/uploads/images/<?=$episode['file'];?>">
-                                <div class="d-flex align-items-center justify-content-center cursor-pointer receive mb-1">
-                                    <i class="fas fa-download pl-1 ms-1"></i>
-                                    <p>دریافت فایل</p>
-                                </div>
-                            </a>
-                            <a href="./PANEL/uploads/movies/<?= $episode['video'];?>">
-                                <div class="d-flex align-items-center justify-content-center cursor-pointer play mb-1">
-                                    <i class="fas fa-play pl-1 ms-1"></i>
-                                    <p> دریافت ویدیو </p>
-                                </div>
-                            </a>
-                            <div class="d-flex align-items-center justify-content-center cursor-pointer askAnswer mb-1">
-                                <p><?= $episode['time']?> </p>
-                            </div>
-                        </div>
-                    </div>
-                    <?php }?>
+                    <?php } ?>
 
 
                 </div>
@@ -272,6 +298,25 @@ $count=1;
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/scrollToUp.js"></script>
     <script src="js/darkMode.js"></script>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <?php if ($errorReapeted) { ?>
+
+        <script>
+            toastr.error("you have already sighned up!");
+        </script>
+
+    <?php } ?>
+
+    <?php if ($success) { ?>
+
+        <script>
+            toastr.success("thank you!");
+        </script>
+
+    <?php } ?>
+
 </body>
 
 </html>
