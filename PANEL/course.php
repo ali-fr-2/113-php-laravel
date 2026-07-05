@@ -8,29 +8,29 @@
 //     $message = array();
 // // Check if image file is a actual image or fake image
 
- 
+
 // // Check if file already exists
 //     if (file_exists($target_file)) {
 //         $message[] = "با عرض پوزش ، پرونده از قبل وجود دارد.";
 //         $uploadOk = 0;
 //     }
- 
+
 // // Check file size
 //     if ($_FILES["fileToUpload"]["size"] > 5000000000) {
 //         $message[] = "با عرض پوزش ، پرونده شما بسیار بزرگ است.";
 //         $uploadOk = 0;
 //     }
- 
+
 // // Allow certain file formats
 //     if ($imageFileType != "mp4" ) {
 //         $message[] = "متاسفیم فرمت فایل شما باید JPG, JPEG, PNG & GIF باشد.";
 //         $uploadOk = 0;
 //     }
- 
+
 // // Check if $uploadOk is set to 0 by an error
 //     if ($uploadOk == 0) {
 //         $message[] = "متاسفانه فایل شما به درستی آپلود نشد!";
- 
+
 // // if everything is ok, try to upload file
 //     } else {
 //         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
@@ -55,6 +55,7 @@ if (isset($_POST['submit'])) {
   $level = $_POST['level'];
   $status = $_POST['status'];
   $tag = $_POST['tag'];
+  $teacher=$_POST['teacher'];
 
   $extension_image = pathinfo($image['name'], PATHINFO_EXTENSION);
 
@@ -78,7 +79,7 @@ if (isset($_POST['submit'])) {
     die("Image Upload Failed");
   }
 
-  $result = $conn->prepare("INSERT INTO courses SET title=?, caption=?, image=?,	introduction=?,	price=?, category=?,	level=?,	status=?, tag=?, create_date=? ");
+  $result = $conn->prepare("INSERT INTO courses SET title=?, caption=?, image=?,	introduction=?,	price=?, category=?,	level=?,	status=?, tag=?,teacher=?, create_date=? ");
   $result->bindValue(1, $title);
   $result->bindValue(2, $caption);
   $result->bindValue(3, $newName_image);
@@ -88,13 +89,18 @@ if (isset($_POST['submit'])) {
   $result->bindValue(7, $level);
   $result->bindValue(8, $status);
   $result->bindValue(9, $tag);
-  $result->bindValue(10, time());
+  $result->bindValue(10, $teacher);
+  $result->bindValue(11, time());
 
   $result->execute();
 }
 $result = $conn->prepare("SELECT * FROM menus");
 $result->execute();
 $menus = $result->fetchAll(PDO::FETCH_ASSOC);
+
+$result = $conn->prepare("SELECT * FROM users");
+$result->execute();
+$users = $result->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -183,12 +189,32 @@ $menus = $result->fetchAll(PDO::FETCH_ASSOC);
           <input type="radio" name="status" value="0" checked>
           <br>
           <br>
-          <label for="name" class="text-gray-600 fw-bold"> برچسب ها</label>
 
+          <div class="row">
+            <div class="col-md-6">
+              <label for="name" class="text-gray-600 fw-bold"> مدرس دوره </label>
+
+              <select name="teacher" class="form-control">
+
+                <?php foreach ($users as $user) {
+                  if ($user['role'] == 2 || $user['role'] === 3) {
+                ?>
+                    <option value="<?= $user['id'] ?>"> <?= $user['username'] ?> </option>
+                <?php }
+                } ?>
+
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="name" class="text-gray-600 fw-bold">
+                برچسب</label>
+              <input type="text" name="tag" id="fileToUpload" class="form-control mt" />
+            </div>
+
+
+          </div>
           <br>
 
-          <input name="tag" type="text" class="form-control">
-          <br>
           <input type="submit" name="submit" value=" افزودن دوره" class="btn btn-success">
 
         </form>

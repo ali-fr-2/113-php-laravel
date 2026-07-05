@@ -173,7 +173,7 @@ function limit_words($string, $word_limit)
                                     class="d-flex flex-row justify-content-between m-0 py-0 px-4 text-white">
                                     <div class="price d-flex flex-column mt-1"><?= $course['price']?></div>
                                     <div class="time-wrapper d-flex flex-row align-items-center">
-                                        <span class="fs-6"> <?= $course['create_date']?> </span>
+                                        <span class="fs-6"> 12:12 </span>
                                         <div>
                                             <i class="fa fa-clock p-1"></i>
                                         </div>
