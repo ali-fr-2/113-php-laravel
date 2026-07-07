@@ -13,16 +13,16 @@ if (!isset($_GET['id'])) {
     die("Invalid Course");
 }
 
-$getID = (int) $_GET['id'];
+$courseID = (int) $_GET['id'];
 
 $result = $conn->prepare("SELECT * FROM episodes WHERE course=?");
-$result->bindValue(1, $getID);
+$result->bindValue(1, $courseID);
 $result->execute();
 
 $episodes = $result->fetchAll(PDO::FETCH_ASSOC);
 
 $result = $conn->prepare("SELECT * FROM courses WHERE id=?");
-$result->bindValue(1, $getID);
+$result->bindValue(1, $courseID);
 $result->execute();
 
 $courses = $result->fetch(PDO::FETCH_ASSOC);
@@ -33,14 +33,14 @@ if (isset($_POST['add'])) {
 
     $result = $conn->prepare("SELECT * FROM `shopcard` WHERE id_user=? AND id_course=? ");
     $result->bindValue(1, $_SESSION['id']);
-    $result->bindValue(2, $getID);
+    $result->bindValue(2, $courseID);
     $result->execute();
     if ($result->rowCount() >= 1) {
         $errorReapeted = true;
     } else {
         $result = $conn->prepare("INSERT INTO shopcard SET id_user=?, id_course=?");
         $result->bindValue(1, $_SESSION['id']);
-        $result->bindValue(2, $getID);
+        $result->bindValue(2, $courseID);
         $result->execute();
 
         $success = true;

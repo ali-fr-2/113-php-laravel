@@ -84,6 +84,19 @@
                         </ul>
                     </li>
 
+                     <li x-data="dropdown" class="sidebar-item">
+                        <div @click="toggle" class="sidebar-link">
+                            <i class="me-2 bi bi-shop"></i>
+                            <span> خرید ها </span>
+                            <i class="ms-auto bi bi-chevron-down"></i>
+                        </div>
+                        <ul x-show="open" x-transition class="submenu">
+                            <li class="submenu-item">
+                                <a href="./shopcard.php">سبد خرید    </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li x-data="dropdown" class="sidebar-item">
                         <div @click="toggle" class="sidebar-link">
                             <i class="me-2 bi bi-box-seam"></i>
