@@ -71,6 +71,14 @@ $items = $result->fetchAll(PDO::FETCH_ASSOC);
           </tbody>
         </table>
         <div class="alert alert-dark fs-3"> مجموع مبلغ سبد خرید شما : <span class=" text text-success fs-3"><?=$total;?></span></div>
+
+        <div>
+          <form action="shopping.php" method="post">
+            <input class="btn btn-primary" type="submit" name="shopping" value="پرداخت سبد خرید">
+            <input type="hidden" name="total" value="<?=$total ?>" >
+          </form>
+        </div>
+
       </div>
 
     </div>
