@@ -15,6 +15,8 @@ if (!isset($_GET['id'])) {
 
 $courseID = (int) $_GET['id'];
 
+$userID=$_SESSION['id'];
+
 $result = $conn->prepare("SELECT * FROM episodes WHERE course=?");
 $result->bindValue(1, $courseID);
 $result->execute();
@@ -44,6 +46,23 @@ if (isset($_POST['add'])) {
         $result->execute();
 
         $success = true;
+    }
+}
+
+$comment=$_POST['comment'];
+$reply=0;
+
+if(isset($_POST['add_comment'])){
+    if($userID==""){
+        header("location:login.php");
+    }else{
+    $result=$conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
+    $result->bindValue(1,$userID);
+    $result->bindValue(2,$courseID);
+    $result->bindValue(3,$comment);
+    $result->bindValue(4,time());
+    $result->bindValue(5,$reply);
+    $result->execute();
     }
 }
 
@@ -270,6 +289,69 @@ if (isset($_POST['add'])) {
                             </div>
                         </div>
                     <?php } ?>
+
+
+                </div>
+
+
+
+                <div class="row mt-2">
+                    <div class="content col-md-3  ">
+                    </div>
+
+
+                    <div class="content col-6 col-md-8 bg-white me-3">
+                        <h4 class="title"> ثبت نظر در دوره</h4>
+                        <div class="img w-100 bg-white">
+                        </div>
+
+                        <div class="p-3  bg-opacity-10 rounded-end ">
+
+
+                            <form action="" method="post">
+                                <textarea
+                                    name="comment"
+                                    id="text"
+                                    class="form-control mt-2"
+                                    cols="30"
+                                    rows="10"></textarea>
+
+                                <input name="add_comment" class="btn btn-success mt-2" type="submit" value="ثبت نظر">
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+                <div class="row mt-2">
+                    <div class="content col-md-3  ">
+                    </div>
+
+
+                    <div class="content col-6 col-md-8 bg-white me-3">
+                        <h4 class="title mb-4"> نظرات دوره</h4>
+                        <div class="img w-100 bg-white">
+                        </div>
+
+                        <div class="p-3 border border-info rounded-end ">
+
+                            <div class="comment-body">
+                                <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
+                                    <span class="comment-username"
+                                        style="float: right;margin-left: 10px"> قلی </span>
+                                    <span class="ms-1"> | </span>
+                                    <span class="comment-date"> دیگ پسین </span>
+                                    <a href="#comment" class="btn btn-primary" commentid=""
+                                        style="font-size: 12px;margin-right: 5px;" id="reply_comment">پاسخ</a>
+                                </div>
+                                <p class="comment-text text-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, illo? Ipsam, debitis. Atque, dicta blanditiis veniam voluptate consequuntur, natus nihil ut itaque nobis placeat ullam molestiae libero? Eveniet, laboriosam aliquid?</p>
+                            </div>
+                        </div>
+
+
+                    </div>
 
 
                 </div>
