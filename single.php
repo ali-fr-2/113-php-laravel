@@ -15,7 +15,7 @@ if (!isset($_GET['id'])) {
 
 $courseID = (int) $_GET['id'];
 
-$userID=$_SESSION['id'];
+$userID = $_SESSION['id'];
 
 $result = $conn->prepare("SELECT * FROM episodes WHERE course=?");
 $result->bindValue(1, $courseID);
@@ -49,22 +49,32 @@ if (isset($_POST['add'])) {
     }
 }
 
-$comment=$_POST['comment'];
-$reply=0;
+$comment = $_POST['comment'];
+$reply = 0;
 
-if(isset($_POST['add_comment'])){
-    if($userID==""){
+if (isset($_POST['add_comment'])) {
+    if ($userID == "") {
         header("location:login.php");
-    }else{
-    $result=$conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
-    $result->bindValue(1,$userID);
-    $result->bindValue(2,$courseID);
-    $result->bindValue(3,$comment);
-    $result->bindValue(4,time());
-    $result->bindValue(5,$reply);
-    $result->execute();
+    } else {
+        $result = $conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
+        $result->bindValue(1, $userID);
+        $result->bindValue(2, $courseID);
+        $result->bindValue(3, $comment);
+        $result->bindValue(4, time());
+        $result->bindValue(5, $reply);
+        $result->execute();
     }
 }
+
+$result = $conn->prepare(
+    "SELECT comments.content, comments.date, users.username  FROM `comments` 
+JOIN `users` ON comments.sender=users.id WHERE comments.course=? ORDER BY comments.date DESC"
+);
+
+$result->bindValue(1, $courseID);
+$result->execute();
+
+$comments = $result->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -335,20 +345,23 @@ if(isset($_POST['add_comment'])){
                         <div class="img w-100 bg-white">
                         </div>
 
-                        <div class="p-3 border border-info rounded-end ">
+                        <?php foreach ($comments as $comment) { ?>
 
-                            <div class="comment-body">
-                                <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
-                                    <span class="comment-username"
-                                        style="float: right;margin-left: 10px"> قلی </span>
-                                    <span class="ms-1"> | </span>
-                                    <span class="comment-date"> دیگ پسین </span>
-                                    <a href="#comment" class="btn btn-primary" commentid=""
-                                        style="font-size: 12px;margin-right: 5px;" id="reply_comment">پاسخ</a>
+                            <br><br>
+                            <div class="p-3 border border-info rounded-end ">
+                                <div class="comment-body">
+                                    <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
+                                        <span class="comment-username"
+                                            style="float: right;margin-left: 10px"> <?= $comment['username']; ?> </span>
+                                        <span class="ms-1"> | </span>
+                                        <span class="comment-date"> <?=jdate("Y/m/d/h:i:s",$comment['date'])?>  </span>
+                                        <a href="#comment" class="btn btn-primary" commentid=""
+                                            style="font-size: 12px;margin-right: 5px;" id="reply_comment">پاسخ</a>
+                                    </div>
+                                    <p class="comment-text text-light"><?= $comment['content']; ?></p>
                                 </div>
-                                <p class="comment-text text-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, illo? Ipsam, debitis. Atque, dicta blanditiis veniam voluptate consequuntur, natus nihil ut itaque nobis placeat ullam molestiae libero? Eveniet, laboriosam aliquid?</p>
                             </div>
-                        </div>
+                        <?php } ?>
 
 
                     </div>
