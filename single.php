@@ -49,13 +49,13 @@ if (isset($_POST['add'])) {
     }
 }
 
-$comment = $_POST['comment'];
-$reply = 0;
 
 if (isset($_POST['add_comment'])) {
     if ($userID == "") {
         header("location:login.php");
     } else {
+        $reply = 0;
+        $comment = $_POST['comment'];
         $result = $conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
         $result->bindValue(1, $userID);
         $result->bindValue(2, $courseID);
@@ -67,7 +67,7 @@ if (isset($_POST['add_comment'])) {
 }
 
 $result = $conn->prepare(
-    "SELECT comments.content, comments.date, users.username  FROM `comments` 
+    "SELECT *  FROM `comments` 
 JOIN `users` ON comments.sender=users.id WHERE comments.course=? ORDER BY comments.date DESC"
 );
 
@@ -75,6 +75,7 @@ $result->bindValue(1, $courseID);
 $result->execute();
 
 $comments = $result->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -325,7 +326,7 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
                                     class="form-control mt-2"
                                     cols="30"
                                     rows="10"></textarea>
-
+                                <br><br>
                                 <input name="add_comment" class="btn btn-success mt-2" type="submit" value="ثبت نظر">
                             </form>
                         </div>
@@ -354,9 +355,11 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
                                         <span class="comment-username"
                                             style="float: right;margin-left: 10px"> <?= $comment['username']; ?> </span>
                                         <span class="ms-1"> | </span>
-                                        <span class="comment-date"> <?=jdate("Y/m/d/h:i:s",$comment['date'])?>  </span>
-                                        <a href="#comment" class="btn btn-primary" commentid=""
-                                            style="font-size: 12px;margin-right: 5px;" id="reply_comment">پاسخ</a>
+                                        <span class="comment-date"> <?= jdate("Y/m/d/h:i:s", $comment['date']) ?> </span>
+                                        <a href="#comment" class="btn btn-primary reply_comment"
+                                            style="font-size: 12px;margin-right: 5px;" data-commentid="<?= $comment['idcomment']; ?>">پاسخ</a>
+                                        <input type="hidden" value="0" id="reply" name="reply">
+
                                     </div>
                                     <p class="comment-text text-light"><?= $comment['content']; ?></p>
                                 </div>
@@ -395,6 +398,14 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
     <script src="js/darkMode.js"></script>
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script>
+        $(document).on("click", ".reply_comment", function() {
+            const id = $(this).data("commentid");
+            $("#reply").val(id);
+        });
+    </script>
 
     <?php if ($errorReapeted) { ?>
 
