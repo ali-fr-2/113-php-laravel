@@ -52,7 +52,7 @@ $count = 1;
                                 <td><?= $course['price']; ?></td>
                                 <td><?= jdate('Y/m/d/h:i:s',$course['create_date']); ?></td>
                                 <td><?= jdate('Y/m/d/h:i:s',$course['update_date']); ?></td>
-                                <td><a href="./editmenu.php?id=<?= $course['id'] ?>" class="btn btn-warning mx-2">ویرایش</a><a href="./deletemenu.php?id=<?= $course['id'] ?>" class="btn btn-danger">حذف</a></td>
+                                <td><a href="./editcourse.php?id=<?= $course['id'] ?>" class="btn btn-warning mx-2">ویرایش</a><a href="./deletemenu.php?id=<?= $course['id'] ?>" class="btn btn-danger">حذف</a></td>
                             </tr>
                         <?php } ?>
                     </tbody>

@@ -31,6 +31,8 @@ if (isset($_POST['submit'])) {
                         $_SESSION['username']  = $user['username'];
                         $_SESSION['last_login'] = date('Y-m-d H:i:s');
 
+                        setcookie("phone",$user['phone'],time()+86400);
+
                         header("Location: PANEL\index.php");
                         exit;
                     } else {
