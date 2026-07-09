@@ -132,6 +132,19 @@
                         </ul>
                     </li>
 
+                    <li x-data="dropdown" class="sidebar-item">
+                        <div @click="toggle" class="sidebar-link">
+                            <i class="me-2 bi bi-basket-fill"></i>
+                            <span>تیکت ها </span>
+                            <i class="ms-auto bi bi-chevron-down"></i>
+                        </div>
+                        <ul x-show="open" x-transition class="submenu">
+                            <li class="submenu-item">
+                                <a href="./Messages.php">ایجاد تیکت  </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="./teachercourses.php">
                             <i class="me-2 bi bi-book-half"></i>
