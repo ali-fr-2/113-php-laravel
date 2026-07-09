@@ -50,12 +50,28 @@ if (isset($_POST['add'])) {
 }
 
 
+// if (isset($_POST['add_comment'])) {
+//     $reply = $_POST['reply'];
+//     $comment = $_POST['comment'];
+//     if ($userID == "") {
+//         header("location:login.php");
+//     } else {
+//         $result = $conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
+//         $result->bindValue(1, $userID);
+//         $result->bindValue(2, $courseID);
+//         $result->bindValue(3, $comment);
+//         $result->bindValue(4, time());
+//         $result->bindValue(5, $reply);
+//         $result->execute();
+//     }
+// }
+
 if (isset($_POST['add_comment'])) {
+    $reply = isset($_POST['reply']) ? $_POST['reply'] : 0; // مقدار پیش‌فرض 0
+    $comment = $_POST['comment'];
     if ($userID == "") {
         header("location:login.php");
     } else {
-        $reply = 0;
-        $comment = $_POST['comment'];
         $result = $conn->prepare("INSERT INTO `comments` SET sender=?,course=?,content=?,date=?,reply=?");
         $result->bindValue(1, $userID);
         $result->bindValue(2, $courseID);
@@ -327,6 +343,12 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
                                     cols="30"
                                     rows="10"></textarea>
                                 <br><br>
+
+                                <div class="alert alert-danger alert-reply" style="display: none;">
+                                    <p>شما در حال پاسخ دادن به کامنت هستید</p>
+                                </div>
+                                <input type="hidden" value="0" id="reply" name="reply">
+
                                 <input name="add_comment" class="btn btn-success mt-2" type="submit" value="ثبت نظر">
                             </form>
                         </div>
@@ -346,25 +368,45 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
                         <div class="img w-100 bg-white">
                         </div>
 
-                        <?php foreach ($comments as $comment) { ?>
+                        <?php foreach ($comments as $comment) {
+                            if ($comment['reply'] == 0) { ?>
 
-                            <br><br>
-                            <div class="p-3 border border-info rounded-end ">
-                                <div class="comment-body">
-                                    <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
-                                        <span class="comment-username"
-                                            style="float: right;margin-left: 10px"> <?= $comment['username']; ?> </span>
-                                        <span class="ms-1"> | </span>
-                                        <span class="comment-date"> <?= jdate("Y/m/d/h:i:s", $comment['date']) ?> </span>
-                                        <a href="#comment" class="btn btn-primary reply_comment"
-                                            style="font-size: 12px;margin-right: 5px;" data-commentid="<?= $comment['idcomment']; ?>">پاسخ</a>
-                                        <input type="hidden" value="0" id="reply" name="reply">
+                                <br><br>
+                                <div class="p-3 border border-info rounded-end ">
+                                    <div class="comment-body">
+                                        <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
+                                            <span class="comment-username"
+                                                style="float: right;margin-left: 10px"> <?= $comment['username']; ?> </span>
+                                            <span class="ms-1"> | </span>
+                                            <span class="comment-date"> <?= jdate("Y/m/d/h:i:s", $comment['date']) ?> </span>
+                                            <a href="#comment" class="btn btn-primary reply_comment"
+                                                style="font-size: 12px;margin-right: 5px;" data-commentid="<?= $comment['idcomment']; ?>">پاسخ</a>
 
+                                        </div>
+                                        <p class="comment-text text-light"><?= $comment['content']; ?></p>
                                     </div>
-                                    <p class="comment-text text-light"><?= $comment['content']; ?></p>
                                 </div>
-                            </div>
-                        <?php } ?>
+
+                                <?php foreach ($comments as $reply) {
+                                    if ($reply['reply'] == $comment['idcomment']) { ?>
+                                        <div class="p-3 border border-danger rounded-end me-5 mt-3 ">
+                                            <div class="comment-body">
+                                                <div class="comment-info d-flex align-items-center text-white" style=" margin: 10px;opacity: 0.8">
+                                                    <span class="comment-username"
+                                                        style="float: right;margin-left: 10px"> <?= $reply['username']; ?> </span>
+                                                    <span class="ms-1"> | </span>
+                                                    <span class="comment-date"> <?= jdate("Y/m/d/h:i:s", $reply['date']) ?> </span>
+                                                    <a href="#comment" class="btn btn-danger reply_comment"
+                                                        style="font-size: 12px;margin-right: 5px;" data-commentid="<?= $reply['idcomment']; ?>">delete</a>
+
+                                                </div>
+                                                <p class="comment-text text-light"><?= $reply['content']; ?></p>
+                                            </div>
+                                        </div>
+                        <?php }
+                                }
+                            }
+                        } ?>
 
 
                     </div>
@@ -404,6 +446,11 @@ $comments = $result->fetchAll(PDO::FETCH_ASSOC);
         $(document).on("click", ".reply_comment", function() {
             const id = $(this).data("commentid");
             $("#reply").val(id);
+            $(".alert-reply").slideDown();
+        });
+        $(".alert-reply").click(function() {
+            $(this).slideUp();
+            $("#reply").val(0);
         });
     </script>
 
