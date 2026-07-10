@@ -140,7 +140,10 @@
                         </div>
                         <ul x-show="open" x-transition class="submenu">
                             <li class="submenu-item">
-                                <a href="./Messages.php">ایجاد تیکت  </a>
+                                <a href="./tickets.php">ایجاد تیکت  </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="./showtickets.php">لیست تیکت  </a>
                             </li>
                         </ul>
                     </li>

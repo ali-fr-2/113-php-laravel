@@ -26,7 +26,6 @@ if(isset($_POST['ticket'])){
     $result->bindValue(5,$tickets);
     $result->bindValue(6,time());
     $result->execute();
-
 }
 
 
