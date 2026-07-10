@@ -6,11 +6,11 @@ include "header.php";
 
 
 if ($_SESSION['role'] == 3) {
-    $result = $conn->prepare("SELECT * FROM tickets ORDER BY id DESC");
+    $result = $conn->prepare("SELECT * FROM tickets WHERE reply=0 ORDER BY id DESC");
     $result->execute();
     $tickets_admin_list = $result->fetchAll(PDO::FETCH_ASSOC);
 } elseif ($_SESSION['role'] == 1) {
-    $result = $conn->prepare("SELECT * FROM tickets WHERE sender=? ORDER BY id DESC");
+    $result = $conn->prepare("SELECT * FROM tickets WHERE sender=? AND reply=0 ORDER BY id DESC");
     $result->bindValue(1, $_SESSION['id']);
     $result->execute();
     $tickets_user_list = $result->fetchAll(PDO::FETCH_ASSOC);
@@ -54,7 +54,7 @@ $count = 1;
                                     <td><?= $count++; ?></td>
                                     <td><?= $admin['title']; ?></td>
                                     <td><?= jdate("Y/m/d/h:i:s", $admin['time']); ?></td>
-                                    <td><a href="./editmenu.php?id=<?= $admin['id']; ?>" class="btn btn-warning mx-2">ورود</a></td>
+                                    <td><a href="./answerticket.php?main=<?= $admin['id']; ?>" class="btn btn-warning mx-2">ورود</a></td>
                                 </tr>
                             <?php }
                         } elseif ($_SESSION['role'] == 1) {
@@ -64,7 +64,7 @@ $count = 1;
                                     <td><?= $count++; ?></td>
                                     <td><?= $user['title']; ?></td>
                                     <td><?= jdate("Y/m/d/h:i:s", $user['time']); ?></td>
-                                    <td><a href="./editmenu.php?id=<?= $user['id']; ?>" class="btn btn-warning mx-2">ورود</a></td>
+                                    <td><a href="./answerticket.php?main=<?= $user['id']; ?>" class="btn btn-warning mx-2">ورود</a></td>
                                 </tr>
 
 
